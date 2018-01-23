@@ -15,7 +15,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace DatingApp.API.Controllers
 {
-    [Authorize]
+
     [Route("api/[controller]")]
     public class AuthController : Controller
     {
@@ -26,7 +26,7 @@ namespace DatingApp.API.Controllers
         {
             _config = config;
             _repo = repo;
-        }
+        }        
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody]UserForRegisterDto userForRegisterDto)
         {
@@ -48,7 +48,7 @@ namespace DatingApp.API.Controllers
             var createUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
             return StatusCode(201);
         }
-        [AllowAnonymous]
+        
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]UserForLoginDto user)
         {
