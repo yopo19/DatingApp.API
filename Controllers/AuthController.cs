@@ -24,7 +24,7 @@ namespace DatingApp.API.Controllers
 
         public AuthController(IAuthRepository repo, IConfiguration config)
         {
-            _config = config;
+             _config = config;
             _repo = repo;
         }        
         [HttpPost("register")]
@@ -54,7 +54,7 @@ namespace DatingApp.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]UserForLoginDto user)
         {
-            throw new Exception("Computer say no!");
+            // throw new Exception("Computer say no!");
             var userFromRepo = await _repo.Login(user.Username.ToLower(), user.Password);
             if (userFromRepo == null)
             {
