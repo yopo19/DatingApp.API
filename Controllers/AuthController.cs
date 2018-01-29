@@ -45,7 +45,7 @@ namespace DatingApp.API.Controllers
 
             var userToCreate = new User
             {
-                UserName = userForRegisterDto.Username
+                Username = userForRegisterDto.Username
             };
             var createUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
             return StatusCode(201);
@@ -68,7 +68,7 @@ namespace DatingApp.API.Controllers
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
-                    new Claim(ClaimTypes.Name, userFromRepo.UserName.ToString())
+                    new Claim(ClaimTypes.Name, userFromRepo.Username.ToString())
 
 
                 }),
