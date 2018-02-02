@@ -88,7 +88,7 @@ namespace DatingApp.API.Controllers
                 photo.IsMain = true;
             }
             user.Photos.Add(photo);            
-            if(await _repo.SaveAll())
+            if(_repo.SaveAll())
             {
                 var photoToReturn = _mapper.Map<PhotoForReturnDto>(photo);
                 return CreatedAtRoute("GetPhoto", new { id = photo.Id }, photoToReturn);
@@ -119,7 +119,7 @@ namespace DatingApp.API.Controllers
                 currentMainPhoto.IsMain = false;
             }
             photoFromRepo.IsMain = true;
-            if(await _repo.SaveAll())
+            if(_repo.SaveAll())
             {
                 return NoContent(); // OK pero no necesito enviar nada
             }
@@ -157,7 +157,7 @@ namespace DatingApp.API.Controllers
                 _repo.Delete(photoFromRepo);
             }
    
-            if(await _repo.SaveAll())
+            if(_repo.SaveAll())
             {
                 return Ok();
             }

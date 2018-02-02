@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using DatingApp.API.Helpers;
 using AutoMapper;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace DatingApp.API
 {
@@ -36,14 +37,19 @@ namespace DatingApp.API
             //definir key secreta
             var key = Encoding.ASCII.GetBytes(Configuration.GetSection("AppSettings:Token").Value);
             services.AddDbContext<DataContext>(x => x.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+            
             services.AddTransient<Seed>();            
             services.AddCors();
             services.Configure<CloudinarySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddAutoMapper();
-        
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();        
             //aqui se añanden las implementaciones repository
+            services.AddScoped<IUserSession, UserSession>();
             services.AddScoped<IAuthRepository, AuthRepository>();
             services.AddScoped<IDatingRepository, DatingRepository>();
+            
+
+            
             
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {

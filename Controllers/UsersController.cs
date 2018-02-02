@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using DatingApp.API.Data;
 using DatingApp.API.Dtos;
+using DatingApp.API.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,7 +30,7 @@ namespace DatingApp.API.Controllers
             var usersToReturn = _mapper.Map<IEnumerable<UserForListDto>>(users);
             return Ok(usersToReturn);
         }
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "GetUser")]
         public async Task<IActionResult> GetUser(int id)
         {
             var user = await _repo.GetUser(id);
@@ -42,22 +43,22 @@ namespace DatingApp.API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] UserForUpdateDto userForUpdateDto)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
             var currentUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
             var userFromRepo = await _repo.GetUser(id);
-            if(userFromRepo == null)
+            if (userFromRepo == null)
             {
                 return NotFound($"No se ubica al usuario con ID {id}");
             }
-            if(currentUser != userFromRepo.Id)
+            if (currentUser != userFromRepo.Id)
             {
                 return Unauthorized();
             }
             _mapper.Map(userForUpdateDto, userFromRepo);
-            if(await _repo.SaveAll())
+            if (_repo.SaveAll())
             {
                 return NoContent();
             }

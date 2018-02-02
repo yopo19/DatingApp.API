@@ -49,10 +49,16 @@ namespace DatingApp.API.Data
             return _context.Photos.Where(x => x.UserId == userId)
             .FirstOrDefaultAsync(p => p.IsMain);
         }
+        /* 
 
         public async Task<bool> SaveAll()
         {
             return await _context.SaveChangesAsync() > 0;
         }
+        */
+        public bool SaveAll()
+        {
+            return _context.SaveChanges() > 0;
+        }      
     }
 }

@@ -22,7 +22,7 @@ namespace DatingApp.API.Controllers
     {
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
-        private readonly IMapper _mapper;
+        private readonly IMapper _mapper;        
 
         public AuthController(IAuthRepository repo,
          IConfiguration config,
@@ -48,12 +48,11 @@ namespace DatingApp.API.Controllers
                 return BadRequest(ModelState);
 
 
-            var userToCreate = new User
-            {
-                Username = userForRegisterDto.Username
-            };
+            var userToCreate = _mapper.Map<User>(userForRegisterDto);
             var createUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
-            return StatusCode(201);
+
+            var userToReturn = _mapper.Map<UserForDetailedDto>(createUser);
+            return CreatedAtRoute("GetUser", new { controller = "Users", id = createUser.Id }, userToReturn);
         }
 
         [HttpPost("login")]
